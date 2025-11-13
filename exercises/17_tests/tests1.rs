@@ -14,10 +14,14 @@ mod tests {
     // TODO: Import `is_even`. You can use a wildcard to import everything in
     // the outer module.
 
+    use super::*;
+
     #[test]
     fn you_can_assert() {
         // TODO: Test the function `is_even` with some values.
-        assert!();
-        assert!();
+        let even = 2;
+        let uneven = 3;
+        assert!(is_even(even));
+        assert!(!is_even(uneven));
     }
 }
