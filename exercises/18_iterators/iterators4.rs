@@ -10,6 +10,10 @@ fn factorial(num: u64) -> u64 {
     // - additional variables
     // For an extra challenge, don't use:
     // - recursion
+
+    let numbers = 0..num + 1;
+
+    numbers.rfold(1, |acc, x| if x == 0 || x == 1 { acc } else { acc * x })
 }
 
 fn main() {
