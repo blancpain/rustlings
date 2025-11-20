@@ -28,14 +28,46 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
 
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (one, two, three) = tuple;
+        let acceptable_range = 0..=255;
+
+        if acceptable_range.contains(&one)
+            && acceptable_range.contains(&two)
+            && acceptable_range.contains(&three)
+        {
+            Ok(Color {
+                red: one as u8,
+                green: two as u8,
+                blue: three as u8,
+            })
+        } else {
+            Err(IntoColorError::IntConversion)
+        }
+    }
 }
 
 // TODO: Array implementation.
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let [one, two, three] = arr;
+        let acceptable_range = 0..=255;
+
+        if acceptable_range.contains(&one)
+            && acceptable_range.contains(&two)
+            && acceptable_range.contains(&three)
+        {
+            Ok(Color {
+                red: one as u8,
+                green: two as u8,
+                blue: three as u8,
+            })
+        } else {
+            Err(IntoColorError::IntConversion)
+        }
+    }
 }
 
 // TODO: Slice implementation.
@@ -43,7 +75,29 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        let mut iter_s = slice.iter();
+        let (Some(one), Some(two), Some(three), None) =
+            (iter_s.next(), iter_s.next(), iter_s.next(), iter_s.next())
+        else {
+            return Err(IntoColorError::BadLen);
+        };
+
+        let acceptable_range = 0..=255;
+
+        if acceptable_range.contains(one)
+            && acceptable_range.contains(two)
+            && acceptable_range.contains(three)
+        {
+            Ok(Color {
+                red: *one as u8,
+                green: *two as u8,
+                blue: *three as u8,
+            })
+        } else {
+            Err(IntoColorError::IntConversion)
+        }
+    }
 }
 
 fn main() {
